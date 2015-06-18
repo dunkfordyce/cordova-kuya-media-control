@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin
+    xmlns="http://apache.org/cordova/ns/plugins/1.0"
+    id="cordova-kuya-media-control"
+    version="0.0.1">
+
+    <name>kuya-media-control</name>
+	<description></description>
+    <engines>
+        <engine name="cordova" version=">=2.4.0" />
+    </engines>
+
+	<license>MIT</license>
+    <keywords>cordova</keywords>
+
+    <platform name="ios">
+        <!-- Cordova 2.5+ -->
+        <config-file target="config.xml" parent="/*">
+            <feature name="KuyaMediaControl">
+                <param name="ios-package" value="KuyaMediaControl"/>
+                <param name="onload" value="true" />
+            </feature>
+        </config-file>
+
+        <header-file src="src/ios/KuyaMediaControl.h"/>
+        <source-file src="src/ios/KuyaMediaControl.m"/>
+
+        <js-module src="www/KuyaMediaControl.js" name="KuyaMediaControl">
+            <clobbers target="cordova.plugins.KuyaMediaControl" />
+        </js-module>
+
+        <framework src="MediaPlayer.framework" />
+    </platform>
+</plugin>
