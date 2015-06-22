@@ -6,14 +6,16 @@
 @interface KuyaMediaControl : CDVPlugin {
     NSDictionary* nameMap;
     MPMediaItemArtwork* artwork;
-    UIImage *image;
+    UIImage* image;
+    NSMutableDictionary* cached_info;
 }
 
 @property (retain) NSDictionary* nameMap;
 @property (retain) MPMediaItemArtwork* artwork;
 @property (retain) UIImage *image;
+@property (retain) NSMutableDictionary* cached_info;
 
 - (void) pluginInitialize;
-- (void)updateNowPlaying:(CDVInvokedUrlCommand*)command;
+- (void) updateNowPlaying:(CDVInvokedUrlCommand*)command;
 
 @end

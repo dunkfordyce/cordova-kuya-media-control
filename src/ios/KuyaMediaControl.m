@@ -35,8 +35,9 @@
     dispatch_async(queue, ^{
     
         NSMutableDictionary* in_info = [command.arguments objectAtIndex:0];
-        NSMutableDictionary* out_info = [[NSMutableDictionary alloc] init];
-        
+        bool update = [[command.arguments objectAtIndex:1] boolValue];
+        NSMutableDictionary* out_info = update ? self.cached_info : [[NSMutableDictionary alloc] init];
+    
         for (NSString* key in in_info) {
             NSString* mapped = [nameMap objectForKey:key];
             if( mapped ) {
@@ -58,12 +59,9 @@
             
         }
         
-        NSString* art_url = [out_info objectForKey:MPMediaItemPropertyArtwork];
+        NSString* art_url = [in_info objectForKey:@"artwork"];
         if( art_url ) {
-            [out_info removeObjectForKey:MPMediaItemPropertyArtwork];
-            
             //UIImage *image;
-            
             
             if ([art_url hasPrefix: @"http://"] || [art_url hasPrefix: @"https://"]) {
                 NSURL *imageURL = [NSURL URLWithString:art_url];
@@ -99,10 +97,15 @@
         [out_info setObject:[NSNumber numberWithInt:1] forKey:MPNowPlayingInfoPropertyPlaybackRate];
         */
         
-        NSLog(@"setting %@", out_info);
+        NSLog(@"setting %@ update %@", out_info, update ? @"True" : @"false");
+        
+        self.cached_info = out_info;
         
         MPNowPlayingInfoCenter *center = [MPNowPlayingInfoCenter defaultCenter];
-        center.nowPlayingInfo = out_info;
+        center.nowPlayingInfo = self.cached_info;
+        [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:true]
+                                    callbackId:command.callbackId];
+
         /*
         center.nowPlayingInfo = [NSDictionary dictionaryWithObjectsAndKeys:
                                  artist, MPMediaItemPropertyArtist,
@@ -113,10 +116,9 @@
                                  elapsed, MPNowPlayingInfoPropertyElapsedPlaybackTime,
                                  [NSNumber numberWithInt:1], MPNowPlayingInfoPropertyPlaybackRate, nil];
          */
-        [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:true]
-                                    callbackId:command.callbackId];
         
     });
+    
 }
 
 @end
