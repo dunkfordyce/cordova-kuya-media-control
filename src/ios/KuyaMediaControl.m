@@ -184,6 +184,7 @@ static KuyaMediaControl* kuyaMediaControl = nil;
         [self.player removeObserver:self forKeyPath: @"status"];
         [self.player removeObserver:self forKeyPath: @"currentItem.loadedTimeRanges"];
         [self.player removeObserver:self forKeyPath: @"currentItem.seekableTimeRanges"];
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:AVPlayerItemDidPlayToEndTimeNotification object:player];
         [self.player pause];
         self.player = nil;
         
@@ -218,6 +219,8 @@ static KuyaMediaControl* kuyaMediaControl = nil;
          selector:@selector(playerItemDidReachEnd:)
          name:AVPlayerItemDidPlayToEndTimeNotification
          object:player];
+    
+    
     
     [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK
                                                                messageAsBool:true

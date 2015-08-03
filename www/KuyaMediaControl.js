@@ -41,6 +41,7 @@ exports.duration = function() {
     return exec("duration");
 };
 
+/*
 document.addEventListener(PLUGIN+'_status', function(e) { 
     console.log('KM status', e.status);
 }, false);
@@ -90,3 +91,4 @@ exports.test = function() {
         }, false);
     });
 };
+*/
