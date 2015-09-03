@@ -7,6 +7,7 @@
 
 #import <AVFoundation/AVPlayerItem.h>
 #import <AVFoundation/AVTime.h>
+#import <AVFoundation/AVFoundation.h>
 
 #import <CoreMedia/CMTime.h>
 #import <Math.h>
@@ -59,6 +60,14 @@ static KuyaMediaControl* kuyaMediaControl = nil;
     [remote.nextTrackCommand addTarget:self action:@selector(remote_next:)];
     [remote.previousTrackCommand addTarget:self action:@selector(remote_prev:)];
     [remote.playCommand addTarget:self action:@selector(remote_play:)];
+    
+    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+    BOOL ok;
+    NSError *setCategoryError = nil;
+    ok = [audioSession setCategory:AVAudioSessionCategoryPlayback error:&setCategoryError];
+    if (!ok) {
+        NSLog(@"%s setCategoryError=%@", __PRETTY_FUNCTION__, setCategoryError);
+    }
     
 }
 
